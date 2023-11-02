@@ -1,25 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { fetchTopRatedContent } from '../api/api';
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { fetchTopRatedContent, fetchMoviesByGenre } from '../api/api';
 
 const TopRatedScreen = ({ navigation }) => {
   const [topRatedMovies, setTopRatedMovies] = useState([]);
-  const [topRatedSeries, setTopRatedSeries] = useState([]);
+  const [actionMovies, setActionMovies] = useState([]);
+  const [comedyMovies, setComedyMovies] = useState([]);
+  const [dramaMovies, setDramaMovies] = useState([]);
+  const [fantasyMovies, setFantasyMovies] = useState([]);
+  const [horrorMovies, setHorrorMovies] = useState([]);
+  const [romanceMovies, setRomanceMovies] = useState([]);
+  const [sciFiMovies, setSciFiMovies] = useState([]);
+  const [thrillerMovies, setThrillerMovies] = useState([]);
+  const [warMovies, setWarMovies] = useState([]);
+  const [westernMovies, setWesternMovies] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchTopRated = async () => {
       try {
-        const movies = await fetchTopRatedContent('movie');
-        setTopRatedMovies(movies);
+        const topRatedMoviesData = await fetchTopRatedContent('movie');
+        setTopRatedMovies(topRatedMoviesData);
 
-        const series = await fetchTopRatedContent('tv');
-        setTopRatedSeries(series);
+        const actionMoviesData = await fetchMoviesByGenre(28); // ID do gênero de Ação
+        setActionMovies(actionMoviesData);
+
+        const comedyMoviesData = await fetchMoviesByGenre(35); // ID do gênero de Comédia
+        setComedyMovies(comedyMoviesData);
+
+        const dramaMoviesData = await fetchMoviesByGenre(18); // ID do gênero de Drama
+        setDramaMovies(dramaMoviesData);
+
+        const fantasyMoviesData = await fetchMoviesByGenre(14); // ID do gênero de Fantasia
+        setFantasyMovies(fantasyMoviesData);
+
+        const horrorMoviesData = await fetchMoviesByGenre(27); // ID do gênero de Horror
+        setHorrorMovies(horrorMoviesData);
+
+        const romanceMoviesData = await fetchMoviesByGenre(10749); // ID do gênero de Romance
+        setRomanceMovies(romanceMoviesData);
+
+        const sciFiMoviesData = await fetchMoviesByGenre(878); // ID do gênero de Ficção Científica
+        setSciFiMovies(sciFiMoviesData);
+
+        const thrillerMoviesData = await fetchMoviesByGenre(53); // ID do gênero de Thriller
+        setThrillerMovies(thrillerMoviesData);
+
+        const warMoviesData = await fetchMoviesByGenre(10752); // ID do gênero de Guerra
+        setWarMovies(warMoviesData);
+
+        const westernMoviesData = await fetchMoviesByGenre(37); // ID do gênero de Western
+        setWesternMovies(westernMoviesData);
+
       } catch (error) {
-        console.error('Error setting top rated movies and series:', error);
+        console.error('Error setting movies data:', error);
       }
     };
 
-    fetchData();
+    fetchTopRated();
   }, []);
 
   const renderCard = ({ item }) => (
@@ -31,7 +68,7 @@ const TopRatedScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.header}>Top Rated Movies</Text>
       <FlatList
         data={topRatedMovies}
@@ -40,14 +77,87 @@ const TopRatedScreen = ({ navigation }) => {
         horizontal
       />
 
-      <Text style={styles.header}>Top Rated Series</Text>
+      <Text style={styles.header}>Action Movies</Text>
       <FlatList
-        data={topRatedSeries}
+        data={actionMovies}
         renderItem={renderCard}
         keyExtractor={(item) => item.id.toString()}
         horizontal
       />
-    </View>
+
+      <Text style={styles.header}>Comedy Movies</Text>
+      <FlatList
+        data={comedyMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+      <Text style={styles.header}>Drama Movies</Text>
+      <FlatList
+        data={dramaMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+      <Text style={styles.header}>Fantasy Movies</Text>
+      <FlatList
+        data={fantasyMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+      <Text style={styles.header}>Horror Movies</Text>
+      <FlatList
+        data={horrorMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+      <Text style={styles.header}>Romance Movies</Text>
+      <FlatList
+        data={romanceMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+      <Text style={styles.header}>Science Fiction Movies</Text>
+      <FlatList
+        data={sciFiMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+      <Text style={styles.header}>Thriller Movies</Text>
+      <FlatList
+        data={thrillerMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+      <Text style={styles.header}>War Movies</Text>
+      <FlatList
+        data={warMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+      <Text style={styles.header}>Western Movies</Text>
+      <FlatList
+        data={westernMovies}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+      />
+
+    </ScrollView>
   );
 };
 

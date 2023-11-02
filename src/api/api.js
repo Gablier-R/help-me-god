@@ -54,6 +54,20 @@ const fetchMovieDetails = async (movieId) => {
   }
 };
 
+const fetchMoviesByGenre = async (genreId) => {
+  try {
+    const response = await api.get('/discover/movie', {
+      params: {
+        with_genres: genreId,
+      },
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error(`Error fetching movies by genre ${genreId}:`, error);
+    return [];
+  }
+};
+
 const fetchActorDetails = async (actorId) => {
   try {
     const response = await api.get(`/person/${actorId}`);
@@ -95,5 +109,6 @@ export {
   fetchTopRatedContent, // Renomeada para refletir a generalização
   fetchMovieDetails,
   fetchActorDetails,
-  fetchActorMoviesAndSeries
+  fetchActorMoviesAndSeries,
+  fetchMoviesByGenre
 };
